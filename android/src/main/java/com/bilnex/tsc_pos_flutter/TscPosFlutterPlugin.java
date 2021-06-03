@@ -142,7 +142,8 @@ public class TscPosFlutterPlugin implements FlutterPlugin, MethodCallHandler {
   public void downloadFile(@NonNull MethodCall call){
     String path = call.argument("path");
     String fileName = call.argument("fileName");
-    tscActivity.downloadfile(path,fileName);
+    String saveName = call.argument("saveName");
+    tscActivity.downloadfile(path,fileName,fileName);
   }
 
   public void deleteFile(@NonNull MethodCall call){

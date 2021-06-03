@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 class TscPosFlutter {
   TscPosFlutter();
-  static const MethodChannel _channel = const MethodChannel('tscposflutter');
+  static const MethodChannel _channel = const MethodChannel('tsc_pos_flutter');
   static Future<String?> get platformVersion async {
     final String? version = await _channel.invokeMethod('getPlatformVersion');
     return version;

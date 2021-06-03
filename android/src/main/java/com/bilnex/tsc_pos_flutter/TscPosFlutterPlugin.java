@@ -9,6 +9,10 @@ import com.example.tscdll.TSCActivity;
 
 import androidx.annotation.NonNull;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class TscPosFlutterPlugin implements FlutterPlugin, MethodCallHandler {
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
@@ -64,6 +68,13 @@ public class TscPosFlutterPlugin implements FlutterPlugin, MethodCallHandler {
         pdfByPath(call);
         result.success("1");
         break;
+      case "pdfByFile":
+        try {
+          pdfByFile(call);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        result.success("1");
       case "printPdfFile":
         printPdfFile(call);
         result.success("1");
@@ -153,6 +164,25 @@ public class TscPosFlutterPlugin implements FlutterPlugin, MethodCallHandler {
     int y = (int)call.argument("y");
     int dpi = (int)call.argument("dpi");
     tscActivity.printPDFbyPath(fileName,x,y,dpi);
+  }
+
+  public void pdfByFile(@NonNull MethodCall call) throws IOException {
+    String data = call.argument("data");
+    String fileName = call.argument("fileName");
+    int x = (int)call.argument("x");
+    int y = (int)call.argument("y");
+    int dpi = (int)call.argument("dpi");
+
+    File file = new File(fileName);
+    if (file.createNewFile()) {
+      System.out.println("File created: " + file.getName());
+    } else {
+      System.out.println("File already exists.");
+    }
+    FileWriter myWriter = new FileWriter(fileName);
+    myWriter.write(data);
+    myWriter.close();
+    tscActivity.printPDFbyFile(file,x,y,dpi);
   }
 
   public void printPdfFile(@NonNull MethodCall call) {

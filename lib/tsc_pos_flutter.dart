@@ -63,6 +63,10 @@ class TscPosFlutter {
     return _channel.invokeMethod("restart");
   }
 
+  Future pdfByFile({@required String? data, @required String? fileName, int x = 0, int y = 0, int dpi = 80}) {
+    return _channel.invokeMethod("pdfByFile", {"data": data, "fileName": fileName, "x": x, "y": y, "dpi": dpi});
+  }
+
   Future printPdfFile(
       {@required String? fileName,
       @required String? path,

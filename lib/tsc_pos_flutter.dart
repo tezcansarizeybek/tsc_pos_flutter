@@ -47,7 +47,7 @@ class TscPosFlutter {
     return _channel.invokeMethod("clearBuffer");
   }
 
-  Future pdfByPath({@required String? fileName, int x = 0, int y = 0, int dpi = 80}) async {
+  Future pdfByPath({@required String? fileName, int x = 0, int y = 0, int dpi = 200}) async {
     return _channel.invokeMethod("printPdfByPath", {"fileName": fileName, "x": x, "y": y, "dpi": dpi});
   }
 
@@ -63,7 +63,7 @@ class TscPosFlutter {
     return _channel.invokeMethod("restart");
   }
 
-  Future pdfByFile({@required String? data, @required String? fileName, int x = 0, int y = 0, int dpi = 80}) {
+  Future pdfByFile({@required String? data, @required String? fileName, int x = 0, int y = 0, int dpi = 200}) {
     return _channel.invokeMethod("pdfByFile", {"data": data, "fileName": fileName, "x": x, "y": y, "dpi": dpi});
   }
 
@@ -76,7 +76,7 @@ class TscPosFlutter {
       int timeout = 5000,
       int x = 0,
       int y = 0,
-      int dpi = 80}) async {
+      int dpi = 200}) async {
     return _channel
         .invokeMethod("printPdfFile", {"fileName": fileName, "x": x, "y": y, "dpi": dpi, "path": path, "mac": mac, "timeout": timeout, "xsize": xsize, "ysize": ysize});
   }

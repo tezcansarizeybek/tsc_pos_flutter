@@ -39,16 +39,16 @@ class TscPosFlutter {
     return _channel.invokeMethod("sendFile", {"path": path, "fileName": fileName});
   }
 
-  Future downloadFile({@required String? path, @required String? fileName}) async {
-    return _channel.invokeMethod("downloadFile", {"path": path, "fileName": fileName});
+  Future downloadFile({@required String? path, @required String? fileName, @required String? saveName}) async {
+    return _channel.invokeMethod("downloadFile", {"path": path, "fileName": fileName, "saveName": saveName});
   }
 
   Future clearBuffer() async {
     return _channel.invokeMethod("clearBuffer");
   }
 
-  Future pdfByPath({@required String? fileName, @required String? saveName, int x = 0, int y = 0, int dpi = 80}) async {
-    return _channel.invokeMethod("printPdfByPath", {"fileName": fileName, "x": x, "y": y, "dpi": dpi, "saveName": saveName});
+  Future pdfByPath({@required String? fileName, int x = 0, int y = 0, int dpi = 80}) async {
+    return _channel.invokeMethod("printPdfByPath", {"fileName": fileName, "x": x, "y": y, "dpi": dpi});
   }
 
   Future noBackFeed() async {

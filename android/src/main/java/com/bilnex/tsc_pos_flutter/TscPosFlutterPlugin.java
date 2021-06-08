@@ -93,93 +93,94 @@ public class TscPosFlutterPlugin implements FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(null);
   }
 
-  public void startConnection(@NonNull MethodCall call){
-    new Thread((Runnable) () -> {
+  public void startConnection(@NonNull final MethodCall call){
+    new Thread(new Runnable(){ public void run(){
       String mac = call.argument("mac");
       tscActivity.openport(mac);
-    }).start();
+    }}).start();
   }
 
-  public void stopConnection(@NonNull MethodCall call){
-    new Thread((Runnable) () -> {
+  public void stopConnection(@NonNull final MethodCall call){
+    new Thread(new Runnable(){
+      public void run(){
       int timeout = (int)call.argument("timeout");
       tscActivity.closeport(timeout);
-    }).start();
+    }}).start();
   }
 
-  public void sendText(@NonNull MethodCall call){
-    new Thread((Runnable) () -> {
+  public void sendText(@NonNull final MethodCall call){
+    new Thread(new Runnable(){ public void run(){
       String msg = call.argument("msg");
       int x = (int)call.argument("x");
       int y = (int)call.argument("y");
       tscActivity.sendcommand("TEXT "+x+","+y+",\"3\",0,1,1,\""+msg+"\"");
-    }).start();
+    }}).start();
   }
 
-  public void sendByteCommand(@NonNull MethodCall call){
-    new Thread((Runnable) () -> {
+  public void sendByteCommand(@NonNull final MethodCall call){
+    new Thread(new Runnable(){ public void run(){
       byte[] byteArray = (byte[])call.argument("bytes");
       tscActivity.sendcommand(byteArray);
-    }).start();
+    }}).start();
   }
 
-  public void sendCommand(@NonNull MethodCall call){
-    new Thread((Runnable) () -> {
+  public void sendCommand(@NonNull final MethodCall call){
+    new Thread(new Runnable(){ public void run(){
       String cmd = call.argument("cmd");
       tscActivity.sendcommand(cmd);
-    }).start();
+    }}).start();
   }
 
-  public void sendCommand(String command){
-    new Thread((Runnable) () -> {
+  public void sendCommand(final String command){
+    new Thread(new Runnable(){ public void run(){
       tscActivity.sendcommand(command);
-    }).start();
+    }}).start();
   }
 
-  public void sendFile(@NonNull MethodCall call){
-    new Thread((Runnable) () -> {
+  public void sendFile(@NonNull final MethodCall call){
+    new Thread(new Runnable(){ public void run(){
       String path = call.argument("path");
       String fileName = call.argument("fileName");
       tscActivity.sendfile(path,fileName);
-    }).start();
+    }}).start();
   }
 
-  public void downloadFile(@NonNull MethodCall call){
-    new Thread((Runnable) () -> {
+  public void downloadFile(@NonNull final MethodCall call){
+    new Thread(new Runnable(){ public void run(){
       String path = call.argument("path");
       String fileName = call.argument("fileName");
       String saveName = call.argument("saveName");
       tscActivity.downloadfile(path,fileName,fileName);
-    }).start();
+    }}).start();
   }
 
-  public void deleteFile(@NonNull MethodCall call){
-    new Thread((Runnable) () -> {
+  public void deleteFile(@NonNull final MethodCall call){
+    new Thread(new Runnable(){ public void run(){
       String deletedFile = call.argument("deleteFile");
       tscActivity.deleteFile(deletedFile);
-    }).start();
+    }}).start();
   }
 
   public void clearBuffer(){
-    new Thread((Runnable) () -> {
+    new Thread(new Runnable(){ public void run(){
       tscActivity.clearbuffer();
-    }).start();
+    }}).start();
   }
 
   public void restart(){
-    new Thread((Runnable) () -> {
+    new Thread(new Runnable(){ public void run(){
       tscActivity.restart();
-    }).start();
+    }}).start();
   }
 
-  public void pdfByPath(@NonNull MethodCall call){
-    new Thread((Runnable) () -> {
+  public void pdfByPath(@NonNull final MethodCall call){
+    new Thread(new Runnable(){ public void run(){
       String fileName = call.argument("fileName");
       int x = (int)call.argument("x");
       int y = (int)call.argument("y");
       int dpi = (int)call.argument("dpi");
       tscActivity.printPDFbyPath(fileName,x,y,dpi);
-    }).start();
+    }}).start();
   }
 
   public void printPdfFile(@NonNull MethodCall call) {
@@ -188,7 +189,7 @@ public class TscPosFlutterPlugin implements FlutterPlugin, MethodCallHandler {
     String ysize = call.argument("ysize");
     sendCommand("SIZE "+xsize+","+ysize+"\r\n");
     sendCommand("GAP 0,0\r\n");
-    clearBuffer(call);
+    clearBuffer();
     sendCommand("CLS\r\n");
     downloadFile(call);
     pdfByPath(call);

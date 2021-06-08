@@ -9,6 +9,8 @@ import com.example.tscdll.TSCActivity;
 
 import androidx.annotation.NonNull;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class TscPosFlutterPlugin implements FlutterPlugin, MethodCallHandler {
@@ -66,6 +68,13 @@ public class TscPosFlutterPlugin implements FlutterPlugin, MethodCallHandler {
         pdfByPath(call);
         result.success("1");
         break;
+      case "pdfByFile":
+        try {
+          pdfByFile(call);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        result.success("1");
       case "printPdfFile":
         printPdfFile(call);
         result.success("1");
@@ -93,94 +102,88 @@ public class TscPosFlutterPlugin implements FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(null);
   }
 
-  public void startConnection(@NonNull final MethodCall call){
-    new Thread(new Runnable(){ public void run(){
-      String mac = call.argument("mac");
-      tscActivity.openport(mac);
-    }}).start();
+  public void startConnection(@NonNull MethodCall call){
+    String mac = call.argument("mac");
+    tscActivity.openport(mac);
   }
 
-  public void stopConnection(@NonNull final MethodCall call){
-    new Thread(new Runnable(){
-      public void run(){
-      int timeout = (int)call.argument("timeout");
-      tscActivity.closeport(timeout);
-    }}).start();
+  public void stopConnection(@NonNull MethodCall call){
+    int timeout = (int)call.argument("timeout");
+    tscActivity.closeport(timeout);
   }
 
-  public void sendText(@NonNull final MethodCall call){
-    new Thread(new Runnable(){ public void run(){
-      String msg = call.argument("msg");
-      int x = (int)call.argument("x");
-      int y = (int)call.argument("y");
-      tscActivity.sendcommand("TEXT "+x+","+y+",\"3\",0,1,1,\""+msg+"\"");
-    }}).start();
+  public void sendText(@NonNull MethodCall call){
+    String msg = call.argument("msg");
+    int x = (int)call.argument("x");
+    int y = (int)call.argument("y");
+    tscActivity.sendcommand("TEXT "+x+","+y+",\"3\",0,1,1,\""+msg+"\"");
   }
 
-  public void sendByteCommand(@NonNull final MethodCall call){
-    new Thread(new Runnable(){ public void run(){
-      byte[] byteArray = (byte[])call.argument("bytes");
-      tscActivity.sendcommand(byteArray);
-    }}).start();
+  public void sendByteCommand(@NonNull MethodCall call){
+    byte[] byteArray = (byte[])call.argument("bytes");
+    tscActivity.sendcommand(byteArray);
   }
 
-  public void sendCommand(@NonNull final MethodCall call){
-    new Thread(new Runnable(){ public void run(){
-      String cmd = call.argument("cmd");
-      tscActivity.sendcommand(cmd);
-    }}).start();
+  public void sendCommand(@NonNull MethodCall call){
+    String cmd = call.argument("cmd");
+    tscActivity.sendcommand(cmd);
   }
 
-  public void sendCommand(final String command){
-    new Thread(new Runnable(){ public void run(){
-      tscActivity.sendcommand(command);
-    }}).start();
+  public void sendCommand(String command){
+    tscActivity.sendcommand(command);
   }
 
-  public void sendFile(@NonNull final MethodCall call){
-    new Thread(new Runnable(){ public void run(){
-      String path = call.argument("path");
-      String fileName = call.argument("fileName");
-      tscActivity.sendfile(path,fileName);
-    }}).start();
+  public void sendFile(@NonNull MethodCall call){
+    String path = call.argument("path");
+    String fileName = call.argument("fileName");
+    tscActivity.sendfile(path,fileName);
   }
 
-  public void downloadFile(@NonNull final MethodCall call){
-    new Thread(new Runnable(){ public void run(){
-      String path = call.argument("path");
-      String fileName = call.argument("fileName");
-      String saveName = call.argument("saveName");
-      tscActivity.downloadfile(path,fileName,fileName);
-    }}).start();
+  public void downloadFile(@NonNull MethodCall call){
+    String path = call.argument("path");
+    String fileName = call.argument("fileName");
+    String saveName = call.argument("saveName");
+    tscActivity.downloadfile(path,fileName,fileName);
   }
 
-  public void deleteFile(@NonNull final MethodCall call){
-    new Thread(new Runnable(){ public void run(){
-      String deletedFile = call.argument("deleteFile");
-      tscActivity.deleteFile(deletedFile);
-    }}).start();
+  public void deleteFile(@NonNull MethodCall call){
+    String deletedFile = call.argument("deleteFile");
+    tscActivity.deleteFile(deletedFile);
   }
 
   public void clearBuffer(){
-    new Thread(new Runnable(){ public void run(){
-      tscActivity.clearbuffer();
-    }}).start();
+    tscActivity.clearbuffer();
   }
 
   public void restart(){
-    new Thread(new Runnable(){ public void run(){
-      tscActivity.restart();
-    }}).start();
+    tscActivity.restart();
   }
 
-  public void pdfByPath(@NonNull final MethodCall call){
-    new Thread(new Runnable(){ public void run(){
-      String fileName = call.argument("fileName");
-      int x = (int)call.argument("x");
-      int y = (int)call.argument("y");
-      int dpi = (int)call.argument("dpi");
-      tscActivity.printPDFbyPath(fileName,x,y,dpi);
-    }}).start();
+  public void pdfByPath(@NonNull MethodCall call){
+    String fileName = call.argument("fileName");
+    int x = (int)call.argument("x");
+    int y = (int)call.argument("y");
+    int dpi = (int)call.argument("dpi");
+    tscActivity.printPDFbyPath(fileName,x,y,dpi);
+  }
+
+  public void pdfByFile(@NonNull MethodCall call) throws IOException {
+    String data = call.argument("data");
+    String fileName = call.argument("fileName");
+    int x = (int)call.argument("x");
+    int y = (int)call.argument("y");
+    int dpi = (int)call.argument("dpi");
+
+    File file = new File(fileName);
+    if (file.createNewFile()) {
+      System.out.println("File created: " + file.getName());
+    } else {
+      System.out.println("File already exists.");
+    }
+    FileWriter myWriter = new FileWriter(fileName);
+    myWriter.write(data);
+    myWriter.close();
+    tscActivity.printPDFbyFile(file,x,y,dpi);
   }
 
   public void printPdfFile(@NonNull MethodCall call) {

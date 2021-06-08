@@ -1,9 +1,16 @@
-#import <Flutter/Flutter.h>
+//
+//  TSCSDK.h
+//  TSCSDK
+//
+//  Created by Muta Huang on 14/1/28.
+//  Copyright (c) 2014年 TSC. All rights reserved.
+//
+
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <CoreBluetooth/CoreBluetooth.h> //BLE
-
-@interface TscPosFlutterPlugin : NSObject<FlutterPlugin>{}
+@interface TSCSDK : NSObject{
+}
 - (NSInteger) openport: (NSString*) destination;
 - (NSInteger) openport_ethernet: (NSString*) destination;
 - (NSInteger) openport_ethernet:(NSString*) destination

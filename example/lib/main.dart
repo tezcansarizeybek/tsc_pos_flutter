@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tsc_pos_flutter/tsc_pos_flutter.dart';
 
@@ -28,8 +28,7 @@ class _MyAppState extends State<MyApp> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      platformVersion =
-          await TscPosFlutter.platformVersion ?? 'Unknown platform version';
+      platformVersion = await TscPosFlutter.platformVersion ?? 'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -52,7 +51,13 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: ElevatedButton(
+            child: Text(""),
+            onPressed: () async {
+              var tsc = TscPosFlutter.instance;
+              await tsc.startConnection(mac: '');
+            },
+          ),
         ),
       ),
     );

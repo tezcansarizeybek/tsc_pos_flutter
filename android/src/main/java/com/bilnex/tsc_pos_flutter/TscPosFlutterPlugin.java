@@ -9,8 +9,6 @@ import com.example.tscdll.TSCActivity;
 
 import androidx.annotation.NonNull;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class TscPosFlutterPlugin implements FlutterPlugin, MethodCallHandler {
@@ -61,20 +59,13 @@ public class TscPosFlutterPlugin implements FlutterPlugin, MethodCallHandler {
         result.success("1");
         break;
       case "clearBuffer":
-        clearBuffer(call);
+        clearBuffer();
         result.success("1");
         break;
       case "printPdfByPath":
         pdfByPath(call);
         result.success("1");
         break;
-      case "pdfByFile":
-        try {
-          pdfByFile(call);
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-        result.success("1");
       case "printPdfFile":
         printPdfFile(call);
         result.success("1");
@@ -103,87 +94,92 @@ public class TscPosFlutterPlugin implements FlutterPlugin, MethodCallHandler {
   }
 
   public void startConnection(@NonNull MethodCall call){
-    String mac = call.argument("mac");
-    tscActivity.openport(mac);
+    new Thread((Runnable) () -> {
+      String mac = call.argument("mac");
+      tscActivity.openport(mac);
+    }).start();
   }
 
   public void stopConnection(@NonNull MethodCall call){
-    int timeout = (int)call.argument("timeout");
-    tscActivity.closeport(timeout);
+    new Thread((Runnable) () -> {
+      int timeout = (int)call.argument("timeout");
+      tscActivity.closeport(timeout);
+    }).start();
   }
 
   public void sendText(@NonNull MethodCall call){
-    String msg = call.argument("msg");
-    int x = (int)call.argument("x");
-    int y = (int)call.argument("y");
-    tscActivity.sendcommand("TEXT "+x+","+y+",\"3\",0,1,1,\""+msg+"\"");
+    new Thread((Runnable) () -> {
+      String msg = call.argument("msg");
+      int x = (int)call.argument("x");
+      int y = (int)call.argument("y");
+      tscActivity.sendcommand("TEXT "+x+","+y+",\"3\",0,1,1,\""+msg+"\"");
+    }).start();
   }
 
   public void sendByteCommand(@NonNull MethodCall call){
-    byte[] byteArray = (byte[])call.argument("bytes");
-    tscActivity.sendcommand(byteArray);
+    new Thread((Runnable) () -> {
+      byte[] byteArray = (byte[])call.argument("bytes");
+      tscActivity.sendcommand(byteArray);
+    }).start();
   }
 
   public void sendCommand(@NonNull MethodCall call){
-    String cmd = call.argument("cmd");
-    tscActivity.sendcommand(cmd);
+    new Thread((Runnable) () -> {
+      String cmd = call.argument("cmd");
+      tscActivity.sendcommand(cmd);
+    }).start();
   }
 
   public void sendCommand(String command){
-    tscActivity.sendcommand(command);
+    new Thread((Runnable) () -> {
+      tscActivity.sendcommand(command);
+    }).start();
   }
 
   public void sendFile(@NonNull MethodCall call){
-    String path = call.argument("path");
-    String fileName = call.argument("fileName");
-    tscActivity.sendfile(path,fileName);
+    new Thread((Runnable) () -> {
+      String path = call.argument("path");
+      String fileName = call.argument("fileName");
+      tscActivity.sendfile(path,fileName);
+    }).start();
   }
 
   public void downloadFile(@NonNull MethodCall call){
-    String path = call.argument("path");
-    String fileName = call.argument("fileName");
-    String saveName = call.argument("saveName");
-    tscActivity.downloadfile(path,fileName,fileName);
+    new Thread((Runnable) () -> {
+      String path = call.argument("path");
+      String fileName = call.argument("fileName");
+      String saveName = call.argument("saveName");
+      tscActivity.downloadfile(path,fileName,fileName);
+    }).start();
   }
 
   public void deleteFile(@NonNull MethodCall call){
-    String deletedFile = call.argument("deleteFile");
-    tscActivity.deleteFile(deletedFile);
+    new Thread((Runnable) () -> {
+      String deletedFile = call.argument("deleteFile");
+      tscActivity.deleteFile(deletedFile);
+    }).start();
   }
 
-  public void clearBuffer(@NonNull MethodCall call){
-    tscActivity.clearbuffer();
+  public void clearBuffer(){
+    new Thread((Runnable) () -> {
+      tscActivity.clearbuffer();
+    }).start();
   }
 
   public void restart(){
-    tscActivity.restart();
+    new Thread((Runnable) () -> {
+      tscActivity.restart();
+    }).start();
   }
 
   public void pdfByPath(@NonNull MethodCall call){
-    String fileName = call.argument("fileName");
-    int x = (int)call.argument("x");
-    int y = (int)call.argument("y");
-    int dpi = (int)call.argument("dpi");
-    tscActivity.printPDFbyPath(fileName,x,y,dpi);
-  }
-
-  public void pdfByFile(@NonNull MethodCall call) throws IOException {
-    String data = call.argument("data");
-    String fileName = call.argument("fileName");
-    int x = (int)call.argument("x");
-    int y = (int)call.argument("y");
-    int dpi = (int)call.argument("dpi");
-
-    File file = new File(fileName);
-    if (file.createNewFile()) {
-      System.out.println("File created: " + file.getName());
-    } else {
-      System.out.println("File already exists.");
-    }
-    FileWriter myWriter = new FileWriter(fileName);
-    myWriter.write(data);
-    myWriter.close();
-    tscActivity.printPDFbyFile(file,x,y,dpi);
+    new Thread((Runnable) () -> {
+      String fileName = call.argument("fileName");
+      int x = (int)call.argument("x");
+      int y = (int)call.argument("y");
+      int dpi = (int)call.argument("dpi");
+      tscActivity.printPDFbyPath(fileName,x,y,dpi);
+    }).start();
   }
 
   public void printPdfFile(@NonNull MethodCall call) {

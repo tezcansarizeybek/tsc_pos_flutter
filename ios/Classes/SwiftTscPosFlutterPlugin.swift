@@ -9,6 +9,14 @@ public class SwiftTscPosFlutterPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    result("iOS " + UIDevice.current.systemVersion)
+    if (call.method == "getPlatformVersion") {
+               result("iOS " + UIDevice.current.systemVersion)
+           }
+           else if (call.method == "showAlertDialog") {
+               DispatchQueue.main.async {
+                SwiftTscPosFlutterPlugin tsc = new SwiftTscPosFlutterPlugin
+                tsc.openport_ble("")
+               }
+           }
   }
 }

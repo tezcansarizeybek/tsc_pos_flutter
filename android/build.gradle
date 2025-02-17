@@ -12,7 +12,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:$agp_version1"
+        classpath "com.android.tools.build:gradle:8.1.0"
     }
 }
 
@@ -37,7 +37,7 @@ android {
     packagingOptions {
         jniLibs.useLegacyPackaging = true
     }
-    
+
     compileOptions {
         targetCompatibility JavaVersion.VERSION_17
         sourceCompatibility JavaVersion.VERSION_17
@@ -48,5 +48,4 @@ android {
 
 dependencies {
     implementation files('lib/tscsdk.jar')
-    classpath "com.android.tools.build:gradle:8.1.0"
 }

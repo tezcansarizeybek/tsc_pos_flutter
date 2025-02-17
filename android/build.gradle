@@ -32,9 +32,13 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 34
-
-        vectorDrawables.useSupportLibrary = true
     }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_17
+    }
+    buildToolsVersion '34.0.0'
+    ndkVersion '25.1.8937393'
 }
 
 dependencies {

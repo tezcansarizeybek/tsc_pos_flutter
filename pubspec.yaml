@@ -1,7 +1,7 @@
 name: tsc_pos_flutter
 description: TSC Pos Flutter
 version: 0.0.2
-homepage:
+homepage: https://github.com/yavuzfeti/tsc_pos_flutter.git
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

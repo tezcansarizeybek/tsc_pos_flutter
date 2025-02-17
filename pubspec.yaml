@@ -1,7 +1,7 @@
 name: tsc_pos_flutter
-description: A new flutter plugin project.
-version: 0.0.1
-homepage:
+description: TSC Pos Flutter
+version: 0.0.3
+homepage: https://github.com/yavuzfeti/tsc_pos_flutter.git
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

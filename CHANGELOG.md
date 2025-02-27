@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.5]
+- Added example
+
 ## [0.0.4]
 - Added README.md and CHANGELOG.md
 

@@ -1,0 +1,30 @@
+name: example
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  pdf_render_plus: ^1.4.16
+  permission_handler: ^11.4.0
+  external_path:
+    git: https://github.com/yavuzfeti/external_path.git
+  tsc_pos_flutter:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - lib/assets/sample.pdf
